@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shital Shahi — UI/UX Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --ink: #1A1612;
+    --rust: #C4521A;
+    --muted: #8A7D6E;
+    --light: #EDE7D9;
+    --accent: #D4A853;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--rust);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1px solid var(--rust);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.18s ease;
+    opacity: 0.5;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.3;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    mix-blend-mode: multiply;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--rust); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8rem 3rem 5rem;
+    position: relative;
+  }
+
+  .hero-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 8vw, 7rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.5s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--rust);
+  }
+
+  .hero-desc {
+    margin-top: 2rem;
+    max-width: 340px;
+    font-size: 0.72rem;
+    line-height: 1.8;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.7s forwards;
+  }
+
+  .hero-contact {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.9s forwards;
+  }
+  .hero-contact span {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+  .hero-contact a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    transition: color 0.2s;
+  }
+  .hero-contact a:hover { color: var(--rust); }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-graphic {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .circle-bg {
+    width: 480px; height: 480px;
+    border-radius: 50%;
+    background: var(--light);
+    position: relative;
+    opacity: 0;
+    animation: scaleIn 1.2s ease 0.4s forwards;
+  }
+
+  .circle-ring {
+    position: absolute;
+    inset: -30px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    opacity: 0.4;
+    animation: rotate 20s linear infinite;
+  }
+
+  .circle-ring-2 {
+    position: absolute;
+    inset: -60px;
+    border-radius: 50%;
+    border: 1px dashed var(--muted);
+    opacity: 0.2;
+    animation: rotate 30s linear infinite reverse;
+  }
+
+  .big-initial {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18rem;
+    font-weight: 300;
+    color: var(--cream);
+    position: absolute;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .floating-tag {
+    position: absolute;
+    background: var(--ink);
+    color: var(--cream);
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .floating-tag:nth-child(3) { top: 22%; left: 10%; animation-delay: 0s; }
+  .floating-tag:nth-child(4) { bottom: 28%; right: 8%; animation-delay: 1.5s; }
+  .floating-tag:nth-child(5) { top: 55%; left: 5%; animation-delay: 3s; }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+  }
+
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: var(--muted);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--rust);
+    animation: scanline 2s ease-in-out infinite;
+  }
+
+  .scroll-text {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 8rem 3rem;
+  }
+
+  .section-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 4rem;
+  }
+
+  /* ABOUT */
+  .about {
+    background: var(--ink);
+    color: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .about .section-label { color: var(--accent); }
+  .about .section-title { color: var(--cream); margin-bottom: 0; }
+
+  .about-text {
+    font-size: 0.75rem;
+    line-height: 2;
+    color: rgba(245,240,232,0.65);
+  }
+
+  .about-text p + p { margin-top: 1.5rem; }
+
+  .about-stat {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    border-top: 1px solid rgba(245,240,232,0.1);
+    padding-top: 2.5rem;
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-top: 0.4rem;
+  }
+
+  /* SKILLS */
+  .skills { background: var(--cream); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--ink);
+    border: 1px solid var(--ink);
+  }
+
+  .skill-card {
+    background: var(--cream);
+    padding: 2.5rem;
+    transition: background 0.3s;
+    cursor: default;
+  }
+
+  .skill-card:hover { background: var(--light); }
+
+  .skill-card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    color: var(--rust);
+    margin-bottom: 1.5rem;
+  }
+
+  .skill-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+  }
+
+  .skill-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--ink);
+    padding: 0.3rem 0.7rem;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .skill-card:hover .skill-tag {
+    border-color: var(--rust);
+    color: var(--rust);
+  }
+
+  /* PROJECTS */
+  .projects { background: var(--light); }
+
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--ink);
+  }
+
+  .project-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 3rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid rgba(26,22,18,0.15);
+    cursor: pointer;
+    transition: padding-left 0.3s ease;
+    position: relative;
+  }
+
+  .project-item::before {
+    content: '';
+    position: absolute;
+    left: -3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 1px;
+    background: var(--rust);
+    transition: width 0.3s ease;
+  }
+
+  .project-item:hover { padding-left: 1rem; }
+  .project-item:hover::before { width: 3rem; }
+
+  .project-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--muted);
+  }
+
+  .project-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 400;
+  }
+
+  .project-type {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .project-arrow {
+    font-size: 1.2rem;
+    color: var(--muted);
+    transition: transform 0.3s, color 0.3s;
+  }
+
+  .project-item:hover .project-arrow {
+    transform: translateX(6px);
+    color: var(--rust);
+  }
+
+  /* EDUCATION */
+  .education { background: var(--cream); }
+
+  .edu-timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .edu-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--rust), transparent);
+  }
+
+  .edu-item {
+    position: relative;
+    padding: 0 0 3.5rem 3rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.6s ease;
+  }
+
+  .edu-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .edu-item::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 8px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--rust);
+  }
+
+  .edu-year {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--rust);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .edu-school {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .edu-degree {
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* CERTS */
+  .certificates { background: var(--ink); color: var(--cream); }
+  .certificates .section-label { color: var(--accent); }
+  .certificates .section-title { color: var(--cream); }
+
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .cert-card {
+    border: 1px solid rgba(245,240,232,0.12);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .cert-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+
+  .cert-card:hover { border-color: rgba(212,168,83,0.4); }
+  .cert-card:hover::before { width: 100%; }
+
+  .cert-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .cert-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .cert-issuer {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.35);
+  }
+
+  /* SOFT SKILLS */
+  .softskills { background: var(--cream); }
+
+  .soft-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 600px;
+  }
+
+  .soft-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(26,22,18,0.1);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .soft-item:hover {
+    border-color: var(--rust);
+    transform: translateY(-2px);
+  }
+
+  .soft-icon { font-size: 1.4rem; }
+
+  .soft-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+  }
+
+  /* CONTACT */
+  .contact {
+    background: var(--rust);
+    color: var(--cream);
+    text-align: center;
+    padding: 8rem 3rem;
+  }
+
+  .contact .section-label { color: rgba(245,240,232,0.6); }
+
+  .contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 300;
+    line-height: 1.05;
+    margin-bottom: 2rem;
+    color: var(--cream);
+  }
+
+  /* CHATBOT */
+  .chatbot-toggle {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--rust);
+    color: var(--cream);
+    border: none;
+    box-shadow: 0 18px 36px rgba(26,22,18,0.2);
+    cursor: pointer;
+    z-index: 1100;
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+  }
+
+  .chatbot-panel {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 5.5rem;
+    width: min(340px, calc(100vw - 2rem));
+    max-height: 520px;
+    background: rgba(245,240,232,0.98);
+    border: 1px solid rgba(26,22,18,0.12);
+    border-radius: 24px;
+    box-shadow: 0 28px 60px rgba(26,22,18,0.16);
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    z-index: 1099;
+  }
+
+  .chatbot-panel.open { display: flex; }
+
+  .chatbot-header {
+    padding: 1rem 1.25rem;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chatbot-messages {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .chatbot-message {
+    max-width: 85%;
+    padding: 0.95rem 1rem;
+    border-radius: 18px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .chatbot-message.user {
+    align-self: flex-end;
+    background: var(--rust);
+    color: var(--cream);
+    border-bottom-right-radius: 6px;
+  }
+
+  .chatbot-message.bot {
+    align-self: flex-start;
+    background: rgba(26,22,18,0.08);
+    color: var(--ink);
+    border-bottom-left-radius: 6px;
+  }
+
+  .chatbot-input {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-top: 1px solid rgba(26,22,18,0.08);
+    background: rgba(245,240,232,0.98);
+  }
+
+  .chatbot-input input {
+    flex: 1;
+    border: 1px solid rgba(26,22,18,0.14);
+    border-radius: 999px;
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+    outline: none;
+  }
+
+  .chatbot-input button {
+    border: none;
+    padding: 0.85rem 1.2rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--cream);
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.7);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(245,240,232,0.3);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .contact-link:hover {
+    color: var(--cream);
+    border-color: var(--cream);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(245,240,232,0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes scanline {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 7rem 1.5rem 3rem; }
+    .hero-right { display: none; }
+    .about { grid-template-columns: 1fr; padding: 5rem 1.5rem; gap: 3rem; }
+    section { padding: 5rem 1.5rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .cert-grid { grid-template-columns: 1fr; }
+    .project-item { grid-template-columns: 50px 1fr auto; gap: 1rem; }
+    .soft-list { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">SS</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-label">UI/UX & Product Designer</div>
+    <h1 class="hero-name">Shital<br><em>Shahi</em></h1>
+    <p class="hero-desc">A fourth semester BSc. IT student with a deep passion for emerging technologies—designing experiences that are both beautiful and purposeful.</p>
+    <div class="hero-contact">
+      <span>Godavari, Nepal</span>
+      <span><a href="mailto:shital24shahi@gmail.com">shital24shahi@gmail.com</a></span>
+      <span><a href="tel:9818751601">+977 9818751601</a></span>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span class="scroll-text">Scroll</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-graphic">
+      <div class="circle-bg">
+        <div class="circle-ring"></div>
+        <div class="circle-ring-2"></div>
+        <div class="big-initial">S</div>
+      </div>
+      <div class="floating-tag">Figma</div>
+      <div class="floating-tag">UI/UX</div>
+      <div class="floating-tag">HTML & CSS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div>
+    <div class="section-label">Who I am</div>
+    <h2 class="section-title">Designing<br>with<br><em>purpose</em></h2>
+  </div>
+  <div>
+    <div class="about-text">
+      <p>I am currently a fourth semester student pursuing a Bachelor of Science in Information Technology (BSc. IT) degree with a strong passion for emerging technologies and innovation.</p>
+      <p>I am eager to explore how technology can solve real-world problems, and I am continuously expanding my skill set—from design tools like Figma and Canva to front-end development with HTML and CSS.</p>
+      <p>My goal is to bridge the gap between beautiful design and functional technology, creating digital experiences that are intuitive, accessible, and memorable.</p>
+    </div>
+    <div class="about-stat">
+      <div>
+        <div class="stat-num">2+</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Certificates Earned</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="section-label">What I do</div>
+  <h2 class="section-title">Skills &<br>Expertise</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-card-num">01</div>
+      <div class="skill-card-title">UI/UX Design</div>
+      <p style="font-size:0.68rem;line-height:1.8;color:var(--muted)">Creating user-centered interfaces with strong visual hierarchy and seamless interaction flows.</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">Canva</span>
+        <span class="skill-tag">draw.io</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-num">02</div>
+      <div class="skill-card-title">Front-End Development</div>
+      <p style="font-size:0.68rem;line-height:1.8;color:var(--muted)">Building clean, responsive web interfaces using modern HTML and CSS techniques.</p>
+      <div class="skill-tags">
+        <span class="skill-tag">HTML</span>
+        <span class="skill-tag">CSS</span>
+        <span class="skill-tag">Web Design</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-num">03</div>
+      <div class="skill-card-title">Problem Solving</div>
+      <p style="font-size:0.68rem;line-height:1.8;color:var(--muted)">Applying fundamental programming concepts to analyze challenges and build effective solutions.</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Logic</span>
+        <span class="skill-tag">Algorithms</span>
+        <span class="skill-tag">Analysis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="section-label">What I've built</div>
+  <h2 class="section-title">Projects</h2>
+  <div class="projects-list">
+    <div class="project-item">
+      <div class="project-num">01</div>
+      <div>
+        <div class="project-name">Music Mobile App</div>
+        <div class="project-type">UI/UX Design · Mobile</div>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
+    <div class="project-item">
+      <div class="project-num">02</div>
+      <div>
+        <div class="project-name">Medical Application</div>
+        <div class="project-type">UI/UX Design · Healthcare</div>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="education" id="education">
+  <div class="section-label">My journey</div>
+  <h2 class="section-title">Education</h2>
+  <div class="edu-timeline">
+    <div class="edu-item">
+      <div class="edu-year">Present</div>
+      <div class="edu-school">Techspire College</div>
+      <div class="edu-degree">Bachelor of Science in Information Technology (BSc. IT)</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">2024 AD</div>
+      <div class="edu-school">St. Mary's School, Jawalakhel</div>
+      <div class="edu-degree">+2 NEB Boards</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">2022 AD</div>
+      <div class="edu-school">St. Xavier's School, Godavari</div>
+      <div class="edu-degree">Secondary Education Examination</div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section class="certificates" id="certificates">
+  <div class="section-label">Verified learning</div>
+  <h2 class="section-title">Certificates</h2>
+  <div class="cert-grid">
+    <div class="cert-card">
+      <div class="cert-icon">🎨</div>
+      <div class="cert-title">Figma UI/UX Workshop</div>
+      <div class="cert-issuer">AITM</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">✦</div>
+      <div class="cert-title">Basics of Figma</div>
+      <div class="cert-issuer">Simplilearn</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">◈</div>
+      <div class="cert-title">Basics of UI/UX</div>
+      <div class="cert-issuer">Simplilearn</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOFT SKILLS -->
+<section class="softskills">
+  <div class="section-label">How I work</div>
+  <h2 class="section-title">Soft Skills</h2>
+  <div class="soft-list">
+    <div class="soft-item">
+      <div class="soft-icon">👂</div>
+      <div class="soft-name">Active Listening</div>
+    </div>
+    <div class="soft-item">
+      <div class="soft-icon">⏱</div>
+      <div class="soft-name">Time Management</div>
+    </div>
+    <div class="soft-item">
+      <div class="soft-icon">⚡</div>
+      <div class="soft-name">Adaptability</div>
+    </div>
+    <div class="soft-item">
+      <div class="soft-icon">🤝</div>
+      <div class="soft-name">Teamwork</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-label">Get in touch</div>
+  <h2 class="contact-title">Let's work<br><em>together</em></h2>
+  <p style="font-size:0.72rem;color:rgba(245,240,232,0.7);max-width:400px;margin:0 auto;line-height:1.9">Have a project in mind? I'd love to hear about it and explore how we can create something meaningful together.</p>
+  <div class="contact-links">
+    <a href="mailto:shital24shahi@gmail.com" class="contact-link">shital24shahi@gmail.com</a>
+    <a href="tel:9818751601" class="contact-link">+977 9818751601</a>
+    <span class="contact-link" style="cursor:default">Godavari, Nepal</span>
+  </div>
+</section>
+
+<button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat">💬</button>
+<div class="chatbot-panel" id="chatbotPanel" role="region" aria-label="Chatbot">
+  <div class="chatbot-header">
+    <span>Portfolio Assistant</span>
+    <button id="chatbotClose" style="background:none;border:none;color:inherit;font-size:1.2rem;cursor:pointer;">×</button>
+  </div>
+  <div class="chatbot-messages" id="chatbotMessages">
+    <div class="chatbot-message bot">Hi, I’m your portfolio assistant. Ask me about this site, my skills, or how to connect.</div>
+  </div>
+  <div class="chatbot-input">
+    <input id="chatbotInput" type="text" placeholder="Type a question…" autocomplete="off" />
+    <button id="chatbotSend">Send</button>
+  </div>
+</div>
+
+<footer>
+  <span>© 2024 Shital Shahi</span>
+  <span>UI/UX Designer · Product Designer</span>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .project-item, .skill-card, .cert-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.transform = 'translate(-50%,-50%) scale(1.8)';
+      ring.style.opacity = '0.8';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.opacity = '0.5';
+    });
+  });
+
+  // Scroll reveal for education
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 150);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.edu-item').forEach(el => observer.observe(el));
+
+  // Smooth nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 200) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--rust)' : '';
+    });
+  });
+
+  const chatbotToggle = document.getElementById('chatbotToggle');
+  const chatbotPanel = document.getElementById('chatbotPanel');
+  const chatbotClose = document.getElementById('chatbotClose');
+  const chatbotMessages = document.getElementById('chatbotMessages');
+  const chatbotInput = document.getElementById('chatbotInput');
+  const chatbotSend = document.getElementById('chatbotSend');
+
+  const localReplies = {
+    hello: 'Hello! I am Shital Shahi’s portfolio assistant. Ask me about her work, skills, education, certificates, or contact details.',
+    portfolio: 'This portfolio belongs to Shital Shahi, a UI/UX and product designer based in Godavari, Nepal. It highlights her skills in design, front-end development, and her education journey.',
+    skills: 'Shital works with Figma, Canva, draw.io, HTML, and CSS. She also has strong problem-solving foundations and soft skills like active listening, time management, adaptability, and teamwork.',
+    education: 'She studied at St. Xavier’s School, Godavari (Secondary Education Examination, 2022), St. Mary’s School, Jawalakhel (+2 NEB Boards, 2024), and is currently pursuing BSc. IT at Techspire College.',
+    certificates: 'Shital has certificates for Figma UI/UX Workshop from AITM, Basics of Figma from Simplilearn, and Basics of UI/UX from Simplilearn.',
+    projects: 'Featured projects include a music mobile application and a medical application, both focused on user-centered design and usability.',
+    contact: 'You can reach Shital at shital24shahi@gmail.com or by phone at +977 9818751601.',
+    default: 'I’m here to help. Try asking about Shital’s skills, education, projects, or how to contact her.'
+  };
+
+  function addMessage(text, type) {
+    const message = document.createElement('div');
+    message.className = `chatbot-message ${type}`;
+    message.textContent = text;
+    chatbotMessages.appendChild(message);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  function getLocalReply(userText) {
+    const normalized = userText.toLowerCase();
+    if (normalized.includes('skill') || normalized.includes('design') || normalized.includes('front-end')) return localReplies.skills;
+    if (normalized.includes('education') || normalized.includes('college') || normalized.includes('school')) return localReplies.education;
+    if (normalized.includes('certificate') || normalized.includes('certification') || normalized.includes('certs')) return localReplies.certificates;
+    if (normalized.includes('project') || normalized.includes('work') || normalized.includes('application')) return localReplies.projects;
+    if (normalized.includes('contact') || normalized.includes('email') || normalized.includes('phone')) return localReplies.contact;
+    if (normalized.includes('portfolio') || normalized.includes('site') || normalized.includes('page')) return localReplies.portfolio;
+    if (normalized.includes('hello') || normalized.includes('hi') || normalized.includes('hey')) return localReplies.hello;
+    return localReplies.default;
+  }
+
+  function sendChat() {
+    const value = chatbotInput.value.trim();
+    if (!value) return;
+    addMessage(value, 'user');
+    chatbotInput.value = '';
+
+    addMessage('Typing...', 'bot');
+    chatbotPanel.scrollTop = chatbotPanel.scrollHeight;
+
+    setTimeout(() => {
+      const reply = getLocalReply(value);
+      const typingBubble = chatbotMessages.querySelector('.chatbot-message.bot:last-child');
+      if (typingBubble) typingBubble.textContent = reply;
+    }, 400);
+  }
+
+  chatbotToggle.addEventListener('click', () => chatbotPanel.classList.toggle('open'));
+  chatbotClose.addEventListener('click', () => chatbotPanel.classList.remove('open'));
+  chatbotSend.addEventListener('click', sendChat);
+  chatbotInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendChat();
+  });
+</script>
+</body>
+</html>

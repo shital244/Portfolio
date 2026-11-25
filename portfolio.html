@@ -1,1174 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shital Shahi — UI/UX Designer</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shital Shahi – UI/UX & Product Designer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=DM+Sans:wght@400;500;700&display=swap">
 <style>
-  :root {
-    --cream: #F5F0E8;
-    --ink: #1A1612;
-    --rust: #C4521A;
-    --muted: #8A7D6E;
-    --light: #EDE7D9;
-    --accent: #D4A853;
-  }
-
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--cream);
-    color: var(--ink);
-    font-family: 'DM Mono', monospace;
-    font-weight: 300;
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* Custom cursor */
-  .cursor {
-    position: fixed;
-    width: 8px; height: 8px;
-    background: var(--rust);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 32px; height: 32px;
-    border: 1px solid var(--rust);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: all 0.18s ease;
-    opacity: 0.5;
-  }
-
-  /* Noise overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.3;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 3rem;
-    mix-blend-mode: multiply;
-  }
-
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 300;
-    letter-spacing: 0.12em;
-    color: var(--ink);
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-  .nav-links a:hover { color: var(--rust); }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 8rem 3rem 5rem;
-    position: relative;
-  }
-
-  .hero-label {
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--rust);
-    margin-bottom: 1.5rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.3s forwards;
-  }
-
-  .hero-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(4rem, 8vw, 7rem);
-    font-weight: 300;
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-    opacity: 0;
-    animation: fadeUp 0.9s ease 0.5s forwards;
-  }
-
-  .hero-name em {
-    font-style: italic;
-    color: var(--rust);
-  }
-
-  .hero-desc {
-    margin-top: 2rem;
-    max-width: 340px;
-    font-size: 0.72rem;
-    line-height: 1.8;
-    color: var(--muted);
-    opacity: 0;
-    animation: fadeUp 0.9s ease 0.7s forwards;
-  }
-
-  .hero-contact {
-    margin-top: 3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    opacity: 0;
-    animation: fadeUp 0.9s ease 0.9s forwards;
-  }
-  .hero-contact span {
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-  }
-  .hero-contact a {
-    color: var(--ink);
-    text-decoration: none;
-    border-bottom: 1px solid currentColor;
-    padding-bottom: 1px;
-    transition: color 0.2s;
-  }
-  .hero-contact a:hover { color: var(--rust); }
-
-  .hero-right {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .hero-graphic {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .circle-bg {
-    width: 480px; height: 480px;
-    border-radius: 50%;
-    background: var(--light);
-    position: relative;
-    opacity: 0;
-    animation: scaleIn 1.2s ease 0.4s forwards;
-  }
-
-  .circle-ring {
-    position: absolute;
-    inset: -30px;
-    border-radius: 50%;
-    border: 1px solid var(--accent);
-    opacity: 0.4;
-    animation: rotate 20s linear infinite;
-  }
-
-  .circle-ring-2 {
-    position: absolute;
-    inset: -60px;
-    border-radius: 50%;
-    border: 1px dashed var(--muted);
-    opacity: 0.2;
-    animation: rotate 30s linear infinite reverse;
-  }
-
-  .big-initial {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18rem;
-    font-weight: 300;
-    color: var(--cream);
-    position: absolute;
-    line-height: 1;
-    user-select: none;
-  }
-
-  .floating-tag {
-    position: absolute;
-    background: var(--ink);
-    color: var(--cream);
-    font-size: 0.58rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 0.5rem 1rem;
-    animation: float 4s ease-in-out infinite;
-  }
-
-  .floating-tag:nth-child(3) { top: 22%; left: 10%; animation-delay: 0s; }
-  .floating-tag:nth-child(4) { bottom: 28%; right: 8%; animation-delay: 1.5s; }
-  .floating-tag:nth-child(5) { top: 55%; left: 5%; animation-delay: 3s; }
-
-  .scroll-indicator {
-    position: absolute;
-    bottom: 3rem;
-    left: 3rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    opacity: 0;
-    animation: fadeUp 1s ease 1.2s forwards;
-  }
-
-  .scroll-line {
-    width: 40px; height: 1px;
-    background: var(--muted);
-    position: relative;
-    overflow: hidden;
-  }
-  .scroll-line::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--rust);
-    animation: scanline 2s ease-in-out infinite;
-  }
-
-  .scroll-text {
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  /* SECTIONS */
-  section {
-    padding: 8rem 3rem;
-  }
-
-  .section-label {
-    font-size: 0.58rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--rust);
-    margin-bottom: 1rem;
-  }
-
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 300;
-    line-height: 1.1;
-    margin-bottom: 4rem;
-  }
-
-  /* ABOUT */
-  .about {
-    background: var(--ink);
-    color: var(--cream);
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 6rem;
-    align-items: center;
-  }
-
-  .about .section-label { color: var(--accent); }
-  .about .section-title { color: var(--cream); margin-bottom: 0; }
-
-  .about-text {
-    font-size: 0.75rem;
-    line-height: 2;
-    color: rgba(245,240,232,0.65);
-  }
-
-  .about-text p + p { margin-top: 1.5rem; }
-
-  .about-stat {
-    margin-top: 3rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    border-top: 1px solid rgba(245,240,232,0.1);
-    padding-top: 2.5rem;
-  }
-
-  .stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 300;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(245,240,232,0.4);
-    margin-top: 0.4rem;
-  }
-
-  /* SKILLS */
-  .skills { background: var(--cream); }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--ink);
-    border: 1px solid var(--ink);
-  }
-
-  .skill-card {
-    background: var(--cream);
-    padding: 2.5rem;
-    transition: background 0.3s;
-    cursor: default;
-  }
-
-  .skill-card:hover { background: var(--light); }
-
-  .skill-card-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.9rem;
-    color: var(--rust);
-    margin-bottom: 1.5rem;
-  }
-
-  .skill-card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-  }
-
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1.2rem;
-  }
-
-  .skill-tag {
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    border: 1px solid var(--ink);
-    padding: 0.3rem 0.7rem;
-    color: var(--muted);
-    transition: all 0.2s;
-  }
-
-  .skill-card:hover .skill-tag {
-    border-color: var(--rust);
-    color: var(--rust);
-  }
-
-  /* PROJECTS */
-  .projects { background: var(--light); }
-
-  .projects-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    border-top: 1px solid var(--ink);
-  }
-
-  .project-item {
-    display: grid;
-    grid-template-columns: 80px 1fr auto;
-    align-items: center;
-    gap: 3rem;
-    padding: 2.5rem 0;
-    border-bottom: 1px solid rgba(26,22,18,0.15);
-    cursor: pointer;
-    transition: padding-left 0.3s ease;
-    position: relative;
-  }
-
-  .project-item::before {
-    content: '';
-    position: absolute;
-    left: -3rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 1px;
-    background: var(--rust);
-    transition: width 0.3s ease;
-  }
-
-  .project-item:hover { padding-left: 1rem; }
-  .project-item:hover::before { width: 3rem; }
-
-  .project-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 300;
-    color: var(--muted);
-  }
-
-  .project-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 400;
-  }
-
-  .project-type {
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .project-arrow {
-    font-size: 1.2rem;
-    color: var(--muted);
-    transition: transform 0.3s, color 0.3s;
-  }
-
-  .project-item:hover .project-arrow {
-    transform: translateX(6px);
-    color: var(--rust);
-  }
-
-  /* EDUCATION */
-  .education { background: var(--cream); }
-
-  .edu-timeline {
-    position: relative;
-    padding-left: 2rem;
-  }
-
-  .edu-timeline::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 8px;
-    bottom: 8px;
-    width: 1px;
-    background: linear-gradient(to bottom, var(--rust), transparent);
-  }
-
-  .edu-item {
-    position: relative;
-    padding: 0 0 3.5rem 3rem;
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: all 0.6s ease;
-  }
-
-  .edu-item.visible {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .edu-item::before {
-    content: '';
-    position: absolute;
-    left: -4px;
-    top: 8px;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--rust);
-  }
-
-  .edu-year {
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: var(--rust);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-  }
-
-  .edu-school {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.8rem;
-    font-weight: 400;
-    line-height: 1.1;
-  }
-
-  .edu-degree {
-    font-size: 0.68rem;
-    color: var(--muted);
-    margin-top: 0.4rem;
-    letter-spacing: 0.05em;
-  }
-
-  /* CERTS */
-  .certificates { background: var(--ink); color: var(--cream); }
-  .certificates .section-label { color: var(--accent); }
-  .certificates .section-title { color: var(--cream); }
-
-  .cert-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-
-  .cert-card {
-    border: 1px solid rgba(245,240,232,0.12);
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s;
-  }
-
-  .cert-card::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    height: 2px;
-    width: 0;
-    background: var(--accent);
-    transition: width 0.4s ease;
-  }
-
-  .cert-card:hover { border-color: rgba(212,168,83,0.4); }
-  .cert-card:hover::before { width: 100%; }
-
-  .cert-icon {
-    font-size: 1.5rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .cert-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: var(--cream);
-    margin-bottom: 0.5rem;
-  }
-
-  .cert-issuer {
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(245,240,232,0.35);
-  }
-
-  /* SOFT SKILLS */
-  .softskills { background: var(--cream); }
-
-  .soft-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    max-width: 600px;
-  }
-
-  .soft-item {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    padding: 1.5rem;
-    border: 1px solid rgba(26,22,18,0.1);
-    transition: border-color 0.3s, transform 0.3s;
-  }
-
-  .soft-item:hover {
-    border-color: var(--rust);
-    transform: translateY(-2px);
-  }
-
-  .soft-icon { font-size: 1.4rem; }
-
-  .soft-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
-  }
-
-  /* CONTACT */
-  .contact {
-    background: var(--rust);
-    color: var(--cream);
-    text-align: center;
-    padding: 8rem 3rem;
-  }
-
-  .contact .section-label { color: rgba(245,240,232,0.6); }
-
-  .contact-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 7vw, 6rem);
-    font-weight: 300;
-    line-height: 1.05;
-    margin-bottom: 2rem;
-    color: var(--cream);
-  }
-
-  /* CHATBOT */
-  .chatbot-toggle {
-    position: fixed;
-    right: 1.5rem;
-    bottom: 1.5rem;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: var(--rust);
-    color: var(--cream);
-    border: none;
-    box-shadow: 0 18px 36px rgba(26,22,18,0.2);
-    cursor: pointer;
-    z-index: 1100;
-    display: grid;
-    place-items: center;
-    font-size: 1.5rem;
-  }
-
-  .chatbot-panel {
-    position: fixed;
-    right: 1.5rem;
-    bottom: 5.5rem;
-    width: min(340px, calc(100vw - 2rem));
-    max-height: 520px;
-    background: rgba(245,240,232,0.98);
-    border: 1px solid rgba(26,22,18,0.12);
-    border-radius: 24px;
-    box-shadow: 0 28px 60px rgba(26,22,18,0.16);
-    overflow: hidden;
-    display: none;
-    flex-direction: column;
-    z-index: 1099;
-  }
-
-  .chatbot-panel.open { display: flex; }
-
-  .chatbot-header {
-    padding: 1rem 1.25rem;
-    background: var(--ink);
-    color: var(--cream);
-    font-family: 'Cormorant Garamond', serif;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .chatbot-messages {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    overflow-y: auto;
-    flex: 1;
-  }
-
-  .chatbot-message {
-    max-width: 85%;
-    padding: 0.95rem 1rem;
-    border-radius: 18px;
-    font-size: 0.85rem;
-    line-height: 1.5;
-  }
-
-  .chatbot-message.user {
-    align-self: flex-end;
-    background: var(--rust);
-    color: var(--cream);
-    border-bottom-right-radius: 6px;
-  }
-
-  .chatbot-message.bot {
-    align-self: flex-start;
-    background: rgba(26,22,18,0.08);
-    color: var(--ink);
-    border-bottom-left-radius: 6px;
-  }
-
-  .chatbot-input {
-    display: flex;
-    gap: 0.75rem;
-    padding: 1rem;
-    border-top: 1px solid rgba(26,22,18,0.08);
-    background: rgba(245,240,232,0.98);
-  }
-
-  .chatbot-input input {
-    flex: 1;
-    border: 1px solid rgba(26,22,18,0.14);
-    border-radius: 999px;
-    padding: 0.85rem 1rem;
-    font-size: 0.9rem;
-    outline: none;
-  }
-
-  .chatbot-input button {
-    border: none;
-    padding: 0.85rem 1.2rem;
-    border-radius: 999px;
-    background: var(--ink);
-    color: var(--cream);
-    cursor: pointer;
-    font-size: 0.9rem;
-  }
-
-  .contact-links {
-    display: flex;
-    gap: 3rem;
-    justify-content: center;
-    margin-top: 3rem;
-    flex-wrap: wrap;
-  }
-
-  .contact-link {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(245,240,232,0.7);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(245,240,232,0.3);
-    padding-bottom: 2px;
-    transition: color 0.2s, border-color 0.2s;
-  }
-
-  .contact-link:hover {
-    color: var(--cream);
-    border-color: var(--cream);
-  }
-
-  /* FOOTER */
-  footer {
-    background: var(--ink);
-    color: rgba(245,240,232,0.3);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 3rem;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.85); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  @keyframes scanline {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    nav { padding: 1.2rem 1.5rem; }
-    .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-left { padding: 7rem 1.5rem 3rem; }
-    .hero-right { display: none; }
-    .about { grid-template-columns: 1fr; padding: 5rem 1.5rem; gap: 3rem; }
-    section { padding: 5rem 1.5rem; }
-    .skills-grid { grid-template-columns: 1fr; }
-    .cert-grid { grid-template-columns: 1fr; }
-    .project-item { grid-template-columns: 50px 1fr auto; gap: 1rem; }
-    .soft-list { grid-template-columns: 1fr; }
-  }
+:root{--bg:#f2ede4;--ink:#1d1a16;--mut:#6f675c;--line:#d8d0c2;--acc:#d2441f;--card:#e9e2d5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161412;--ink:#f1ebe0;--mut:#a39a8c;--line:#35302a;--acc:#ff7a52;--card:#211e1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#161412;--ink:#f1ebe0;--mut:#a39a8c;--line:#35302a;--acc:#ff7a52;--card:#211e1a;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 "DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+a{color:inherit}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:400;margin:0;line-height:1.05}
+em{font-style:italic;color:var(--acc)}
+.w{max-width:960px;margin:0 auto;padding:0 24px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+nav{display:flex;justify-content:space-between;align-items:center;height:58px}
+.logo{font:600 20px Fraunces,Georgia,serif;text-decoration:none}.logo i{color:var(--acc)}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:14px}
+nav ul a{text-decoration:none;color:var(--mut)}nav ul a:hover{color:var(--ink)}
+@media(max-width:620px){nav ul{gap:13px;font-size:12.5px}.logo{display:none}}
+.hero{padding:72px 0 56px;position:relative}
+.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.hero h1{font-size:clamp(64px,17vw,164px);letter-spacing:-.03em;margin:14px 0 22px}
+.hero h1 em{display:inline-block;position:relative}
+.hero h1 em svg{position:absolute;left:0;bottom:-6px;width:100%;height:14px}
+.lede{max-width:520px;font-size:19px;color:var(--mut);margin:0 0 26px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 26px;font-size:14px;color:var(--mut)}
+.meta a{text-decoration:none;border-bottom:1px solid var(--line)}.meta a:hover{color:var(--acc)}
+.stamp{position:absolute;right:6px;top:70px;transform:rotate(8deg);border:1.5px solid var(--acc);color:var(--acc);border-radius:99px;padding:6px 14px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+@media(max-width:620px){.stamp{top:22px}}
+.band{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:14px 0;font:italic 400 24px Fraunces,Georgia,serif}
+.band div{display:inline-block;animation:slide 26s linear infinite}
+.band span{margin:0 22px}.band b{color:var(--acc);font-style:normal}
+@keyframes slide{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.band div{animation:none}html{scroll-behavior:auto}}
+section{padding:72px 0 8px}
+.lab{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);font-weight:700;margin-bottom:10px}
+h2{font-size:clamp(34px,6vw,54px);letter-spacing:-.02em;margin-bottom:28px}
+.two{display:grid;grid-template-columns:1.6fr 1fr;gap:40px}
+@media(max-width:700px){.two{grid-template-columns:1fr;gap:24px}}
+.two p{margin:0 0 16px;font-size:17px}
+.stats{display:flex;gap:32px}.stats b{display:block;font:400 56px Fraunces,Georgia,serif;line-height:1}.stats span{font-size:13px;color:var(--mut)}
+.sk{display:grid;grid-template-columns:56px 1fr;gap:6px 14px;padding:22px 0;border-top:1px solid var(--line)}
+.sk:last-child{border-bottom:1px solid var(--line)}
+.sk .n{font:italic 400 22px Fraunces,Georgia,serif;color:var(--acc)}
+.sk h3{font-size:26px;margin-bottom:6px}
+.sk p{margin:0 0 8px;color:var(--mut);max-width:560px}
+.sk small{font-size:13px;letter-spacing:.04em}.sk small span+span::before{content:" / ";color:var(--acc)}
+details{border-top:1px solid var(--line)}details:last-of-type{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:48px 1fr auto;align-items:baseline;gap:12px;padding:22px 0}
+summary::-webkit-details-marker{display:none}
+summary .n{font:italic 400 20px Fraunces,Georgia,serif;color:var(--acc)}
+summary h3{font-size:clamp(24px,4.4vw,36px);transition:transform .25s}
+summary:hover h3{transform:translateX(8px)}
+summary .t{display:block;font:400 13px "DM Sans",sans-serif;color:var(--mut);margin-top:4px}
+summary .ar{font-size:26px;color:var(--acc);transition:transform .25s}
+details[open] .ar{transform:rotate(90deg)}
+.body{padding:0 0 26px 60px;max-width:640px;color:var(--mut)}
+.body ul{margin:0;padding-left:18px}
+.tl{border-left:1px solid var(--line);margin-left:6px}
+.tl div{position:relative;padding:0 0 28px 28px}
+.tl div::before{content:"";position:absolute;left:-6px;top:9px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--acc)}
+.tl b{font:600 22px Fraunces,Georgia,serif;display:block}.tl span{color:var(--mut);font-size:15px}.tl i{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);font-style:normal;font-weight:700}
+.cert{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px dashed var(--line)}
+.cert span{color:var(--mut);font-size:14px;text-align:right}
+.soft{font:italic 400 clamp(26px,5vw,42px) Fraunces,Georgia,serif;line-height:1.3}
+.soft span{color:var(--acc);margin:0 .35em;font-style:normal}
+.cta{padding:72px 0}
+.cta a.mail{display:block;font:italic 400 clamp(26px,6.4vw,58px) Fraunces,Georgia,serif;color:var(--acc);text-decoration:none;word-break:break-all;margin:6px 0 22px}
+.cta a.mail:hover{text-decoration:underline}
+footer{border-top:1px solid var(--line);padding:22px 0 90px;font-size:13px;color:var(--mut)}
+footer .w{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:25;background:var(--ink);color:var(--bg);border:0;border-radius:99px;padding:12px 18px;font:500 14px "DM Sans",sans-serif;cursor:pointer}
+.chat{position:fixed;right:18px;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:25;width:min(340px,calc(100vw - 36px));background:var(--card);border:1px solid var(--line);border-radius:16px;display:none;flex-direction:column;max-height:70vh}
+.chat.on{display:flex}
+.chat h4{margin:0;padding:14px 16px;border-bottom:1px solid var(--line);font:600 16px Fraunces,Georgia,serif;display:flex;justify-content:space-between}
+.chat h4 button{background:none;border:0;color:var(--mut);font-size:20px;cursor:pointer;line-height:1}
+#log{padding:14px 16px;overflow:auto;display:flex;flex-direction:column;gap:9px;font-size:14px;min-height:140px}
+#log p{margin:0;padding:9px 12px;border-radius:12px;max-width:88%;line-height:1.5}
+#log .b{background:var(--bg);align-self:flex-start}#log .u{background:var(--acc);color:#fff;align-self:flex-end}
+.chat form{display:flex;border-top:1px solid var(--line)}
+.chat input{flex:1;border:0;background:none;padding:13px 16px;font:inherit;font-size:16px;color:var(--ink);min-width:0;outline:none}
+.chat form button{border:0;background:none;color:var(--acc);font-weight:700;padding:0 16px;cursor:pointer;font:inherit}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}.rv.in{opacity:1;transform:none}
 </style>
 </head>
 <body>
+<header><div class="w"><nav>
+<a class="logo" href="#top"><i>SHITAL</i></a>
+<ul><li><a href="#about">About</a></li><li><a href="#skills">Skills</a></li><li><a href="#projects">Projects</a></li><li><a href="#education">Education</a></li><li><a href="#contact">Contact</a></li></ul>
+</nav></div></header>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">SS</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <div class="hero-label">UI/UX & Product Designer</div>
-    <h1 class="hero-name">Shital<br><em>Shahi</em></h1>
-    <p class="hero-desc">A fourth semester BSc. IT student with a deep passion for emerging technologies—designing experiences that are both beautiful and purposeful.</p>
-    <div class="hero-contact">
-      <span>Godavari, Nepal</span>
-      <span><a href="mailto:shital24shahi@gmail.com">shital24shahi@gmail.com</a></span>
-      <span><a href="tel:9818751601">+977 9818751601</a></span>
-    </div>
-    <div class="scroll-indicator">
-      <div class="scroll-line"></div>
-      <span class="scroll-text">Scroll</span>
-    </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="hero-graphic">
-      <div class="circle-bg">
-        <div class="circle-ring"></div>
-        <div class="circle-ring-2"></div>
-        <div class="big-initial">S</div>
-      </div>
-      <div class="floating-tag">Figma</div>
-      <div class="floating-tag">UI/UX</div>
-      <div class="floating-tag">HTML & CSS</div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section class="about" id="about">
-  <div>
-    <div class="section-label">Who I am</div>
-    <h2 class="section-title">Designing<br>with<br><em>purpose</em></h2>
-  </div>
-  <div>
-    <div class="about-text">
-      <p>I am currently a fourth semester student pursuing a Bachelor of Science in Information Technology (BSc. IT) degree with a strong passion for emerging technologies and innovation.</p>
-      <p>I am eager to explore how technology can solve real-world problems, and I am continuously expanding my skill set—from design tools like Figma and Canva to front-end development with HTML and CSS.</p>
-      <p>My goal is to bridge the gap between beautiful design and functional technology, creating digital experiences that are intuitive, accessible, and memorable.</p>
-    </div>
-    <div class="about-stat">
-      <div>
-        <div class="stat-num">2+</div>
-        <div class="stat-label">Projects Completed</div>
-      </div>
-      <div>
-        <div class="stat-num">3</div>
-        <div class="stat-label">Certificates Earned</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section class="skills" id="skills">
-  <div class="section-label">What I do</div>
-  <h2 class="section-title">Skills &<br>Expertise</h2>
-  <div class="skills-grid">
-    <div class="skill-card">
-      <div class="skill-card-num">01</div>
-      <div class="skill-card-title">UI/UX Design</div>
-      <p style="font-size:0.68rem;line-height:1.8;color:var(--muted)">Creating user-centered interfaces with strong visual hierarchy and seamless interaction flows.</p>
-      <div class="skill-tags">
-        <span class="skill-tag">Figma</span>
-        <span class="skill-tag">Canva</span>
-        <span class="skill-tag">draw.io</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-card-num">02</div>
-      <div class="skill-card-title">Front-End Development</div>
-      <p style="font-size:0.68rem;line-height:1.8;color:var(--muted)">Building clean, responsive web interfaces using modern HTML and CSS techniques.</p>
-      <div class="skill-tags">
-        <span class="skill-tag">HTML</span>
-        <span class="skill-tag">CSS</span>
-        <span class="skill-tag">Web Design</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-card-num">03</div>
-      <div class="skill-card-title">Problem Solving</div>
-      <p style="font-size:0.68rem;line-height:1.8;color:var(--muted)">Applying fundamental programming concepts to analyze challenges and build effective solutions.</p>
-      <div class="skill-tags">
-        <span class="skill-tag">Logic</span>
-        <span class="skill-tag">Algorithms</span>
-        <span class="skill-tag">Analysis</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section class="projects" id="projects">
-  <div class="section-label">What I've built</div>
-  <h2 class="section-title">Projects</h2>
-  <div class="projects-list">
-    <div class="project-item">
-      <div class="project-num">01</div>
-      <div>
-        <div class="project-name">Music Mobile App</div>
-        <div class="project-type">UI/UX Design · Mobile</div>
-      </div>
-      <div class="project-arrow">→</div>
-    </div>
-    <div class="project-item">
-      <div class="project-num">02</div>
-      <div>
-        <div class="project-name">Medical Application</div>
-        <div class="project-type">UI/UX Design · Healthcare</div>
-      </div>
-      <div class="project-arrow">→</div>
-    </div>
-  </div>
-</section>
-
-<!-- EDUCATION -->
-<section class="education" id="education">
-  <div class="section-label">My journey</div>
-  <h2 class="section-title">Education</h2>
-  <div class="edu-timeline">
-    <div class="edu-item">
-      <div class="edu-year">Present</div>
-      <div class="edu-school">Techspire College</div>
-      <div class="edu-degree">Bachelor of Science in Information Technology (BSc. IT)</div>
-    </div>
-    <div class="edu-item">
-      <div class="edu-year">2024 AD</div>
-      <div class="edu-school">St. Mary's School, Jawalakhel</div>
-      <div class="edu-degree">+2 NEB Boards</div>
-    </div>
-    <div class="edu-item">
-      <div class="edu-year">2022 AD</div>
-      <div class="edu-school">St. Xavier's School, Godavari</div>
-      <div class="edu-degree">Secondary Education Examination</div>
-    </div>
-  </div>
-</section>
-
-<!-- CERTIFICATES -->
-<section class="certificates" id="certificates">
-  <div class="section-label">Verified learning</div>
-  <h2 class="section-title">Certificates</h2>
-  <div class="cert-grid">
-    <div class="cert-card">
-      <div class="cert-icon">🎨</div>
-      <div class="cert-title">Figma UI/UX Workshop</div>
-      <div class="cert-issuer">AITM</div>
-    </div>
-    <div class="cert-card">
-      <div class="cert-icon">✦</div>
-      <div class="cert-title">Basics of Figma</div>
-      <div class="cert-issuer">Simplilearn</div>
-    </div>
-    <div class="cert-card">
-      <div class="cert-icon">◈</div>
-      <div class="cert-title">Basics of UI/UX</div>
-      <div class="cert-issuer">Simplilearn</div>
-    </div>
-  </div>
-</section>
-
-<!-- SOFT SKILLS -->
-<section class="softskills">
-  <div class="section-label">How I work</div>
-  <h2 class="section-title">Soft Skills</h2>
-  <div class="soft-list">
-    <div class="soft-item">
-      <div class="soft-icon">👂</div>
-      <div class="soft-name">Active Listening</div>
-    </div>
-    <div class="soft-item">
-      <div class="soft-icon">⏱</div>
-      <div class="soft-name">Time Management</div>
-    </div>
-    <div class="soft-item">
-      <div class="soft-icon">⚡</div>
-      <div class="soft-name">Adaptability</div>
-    </div>
-    <div class="soft-item">
-      <div class="soft-icon">🤝</div>
-      <div class="soft-name">Teamwork</div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section class="contact" id="contact">
-  <div class="section-label">Get in touch</div>
-  <h2 class="contact-title">Let's work<br><em>together</em></h2>
-  <p style="font-size:0.72rem;color:rgba(245,240,232,0.7);max-width:400px;margin:0 auto;line-height:1.9">Have a project in mind? I'd love to hear about it and explore how we can create something meaningful together.</p>
-  <div class="contact-links">
-    <a href="mailto:shital24shahi@gmail.com" class="contact-link">shital24shahi@gmail.com</a>
-    <a href="tel:9818751601" class="contact-link">+977 9818751601</a>
-    <span class="contact-link" style="cursor:default">Godavari, Nepal</span>
-  </div>
-</section>
-
-<button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat">💬</button>
-<div class="chatbot-panel" id="chatbotPanel" role="region" aria-label="Chatbot">
-  <div class="chatbot-header">
-    <span>Portfolio Assistant</span>
-    <button id="chatbotClose" style="background:none;border:none;color:inherit;font-size:1.2rem;cursor:pointer;">×</button>
-  </div>
-  <div class="chatbot-messages" id="chatbotMessages">
-    <div class="chatbot-message bot">Hi, I’m your portfolio assistant. Ask me about this site, my skills, or how to connect.</div>
-  </div>
-  <div class="chatbot-input">
-    <input id="chatbotInput" type="text" placeholder="Type a question…" autocomplete="off" />
-    <button id="chatbotSend">Send</button>
-  </div>
+<main id="top">
+<div class="w hero">
+<div class="kicker">UI/UX &amp; Product Designer</div>
+<span class="stamp">Open to work</span>
+<h1>Shital <em>Shahi<svg viewBox="0 0 300 14" preserveAspectRatio="none"><path d="M2 9 C60 2, 120 12, 180 5 S270 8, 298 4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></em></h1>
+<p class="lede">A fourth semester BSc. IT student who likes making apps feel obvious to use. I design for real people and real problems, from first sketch to final prototype.</p>
+<div class="meta"><span>Lalitpur, Nepal</span><a href="mailto:shitalshahi004@gmail.com">shitalshahi004@gmail.com</a><a href="tel:+9779818751601">+977 9818751601</a></div>
 </div>
+<div class="band"><div><span>Figma</span><b>✺</b><span>UI/UX</span><b>✺</b><span>Wireframes</span><b>✺</b><span>User flows</span><b>✺</b><span>Prototyping</span><b>✺</b><span>HTML &amp; CSS</span><b>✺</b><span>Figma</span><b>✺</b><span>UI/UX</span><b>✺</b><span>Wireframes</span><b>✺</b><span>User flows</span><b>✺</b><span>Prototyping</span><b>✺</b><span>HTML &amp; CSS</span><b>✺</b></div></div>
 
-<footer>
-  <span>© 2024 Shital Shahi</span>
-  <span>UI/UX Designer · Product Designer</span>
-</footer>
+<section id="about" class="w rv">
+<div class="lab">Who I am</div><h2>Designing with <em>purpose</em></h2>
+<div class="two"><div>
+<p>I’m studying Information Technology at Techspire College, and I’m most curious about how technology can solve everyday problems.</p>
+<p>I work in Figma and Canva, and I know enough HTML and CSS to talk to developers without getting lost. My aim is to close the gap between good-looking design and software that actually works.</p>
+</div><div class="stats"><div><b>5</b><span>Projects</span></div><div><b>4</b><span>Certificates</span></div></div></div>
+</section>
+
+<section id="skills" class="w rv">
+<div class="lab">What I do</div><h2>Skills &amp; <em>expertise</em></h2>
+<div class="sk"><div class="n">01</div><div><h3>UI/UX Design</h3><p>User-centered interfaces with clear hierarchy and smooth flows, backed by research and usability testing.</p><small><span>Figma</span><span>Canva</span><span>Wireframing</span><span>Design systems</span></small></div></div>
+<div class="sk"><div class="n">02</div><div><h3>Front-end basics</h3><p>Clean, responsive pages built with simple HTML, CSS and a little JavaScript, plus Git and GitHub.</p><small><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Git</span></small></div></div>
+<div class="sk"><div class="n">03</div><div><h3>Problem solving</h3><p>Breaking a problem into steps, finding who it affects, and testing ideas before committing.</p><small><span>User research</span><span>User flows</span><span>MySQL</span></small></div></div>
+</section>
+
+<section id="projects" class="w rv">
+<div class="lab">What I’ve built</div><h2>Selected <em>projects</em></h2>
+<details open><summary><span class="n">01</span><h3>Ncell Desktop App Redesign<span class="t">Figma · Desktop · 2026</span></h3><span class="ar">→</span></summary><div class="body"><ul><li>Analyzed users, tasks, and usage environment to find the key design requirements.</li><li>Mapped user flows and built a high-fidelity prototype of the redesigned app.</li></ul></div></details>
+<details><summary><span class="n">02</span><h3>Music Mobile App<span class="t">Figma, Canva · Mobile · 2025</span></h3><span class="ar">→</span></summary><div class="body"><ul><li>Designed the full UI/UX, covering key user flows and core screens.</li><li>Took it from first wireframes to high-fidelity mockups.</li></ul></div></details>
+<details><summary><span class="n">03</span><h3>Medical Application<span class="t">Figma · Healthcare · 2026</span></h3><span class="ar">→</span></summary><div class="body"><ul><li>Designed the UI/UX from user flow mapping and wireframes to final screens.</li></ul></div></details>
+<details><summary><span class="n">04</span><h3>Avilearn Web App<span class="t">Figma · Web · 2026</span></h3><span class="ar">→</span></summary><div class="body"><ul><li>Designed wireframes that set the structure and layout of the web application.</li></ul></div></details>
+<details><summary><span class="n">05</span><h3>Nagarik App Redesign<span class="t">Figma · Mobile · 2026</span></h3><span class="ar">→</span></summary><div class="body"><ul><li>Designed wireframes for the redesign of the Nagarik app.</li></ul></div></details>
+</section>
+
+<section id="experience" class="w rv">
+<div class="lab">Where I’ve worked</div><h2>Experience</h2>
+<div class="tl"><div><i>2026 · 21 days</i><b>IT Fellow / Educator</b><span>TSC Fellowship Program, Techspire College, with EduTech Nepal &amp; Himalayan Trust Nepal</span></div></div>
+</section>
+
+<section id="education" class="w rv">
+<div class="lab">My journey</div><h2>Education</h2>
+<div class="tl">
+<div><i>Present</i><b>Techspire College</b><span>BSc. Information Technology</span></div>
+<div><i>2024</i><b>St. Mary’s School, Jawalakhel</b><span>+2 NEB Boards</span></div>
+<div><i>2022</i><b>St. Xavier’s School, Godavari</b><span>Secondary Education Examination</span></div>
+</div>
+<div class="lab" style="margin-top:36px">Verified learning</div>
+<div class="cert">Figma UI/UX Workshop<span>AITM</span></div>
+<div class="cert">Basics of Figma<span>Simplilearn</span></div>
+<div class="cert">Basics of UI/UX<span>Simplilearn</span></div>
+<div class="cert">Intermediate &amp; Advanced UI/UX<span>Techspire College</span></div>
+</section>
+
+<section class="w rv"><div class="lab">How I work</div>
+<p class="soft">Active listening<span>/</span>Time management<span>/</span>Adaptability<span>/</span>Teamwork</p></section>
+
+<section id="contact" class="w cta rv">
+<div class="lab">Get in touch</div><h2>Let’s work <em>together</em></h2>
+<a class="mail" href="mailto:shitalshahi004@gmail.com">shitalshahi004@gmail.com</a>
+<div class="meta"><a href="tel:+9779818751601">+977 9818751601</a><a href="https://www.linkedin.com/in/shitalshahi024">LinkedIn</a><span>Lalitpur, Nepal</span></div>
+</section>
+</main>
+<footer><div class="w"><span>© 2026 Shital Shahi</span><span>UI/UX Designer · Product Designer</span></div></footer>
+
+<button class="fab" id="fab">Ask me anything</button>
+<div class="chat" id="chat"><h4>Portfolio assistant<button id="x" aria-label="Close">×</button></h4>
+<div id="log"><p class="b">Hi, I’m the portfolio assistant. Ask about my skills, projects, education, or how to reach me.</p></div>
+<form id="f"><input id="q" placeholder="Type a question…" autocomplete="off"><button>Send</button></form></div>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-  });
-
-  function animateRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  document.querySelectorAll('a, button, .project-item, .skill-card, .cert-card').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      ring.style.transform = 'translate(-50%,-50%) scale(1.8)';
-      ring.style.opacity = '0.8';
-    });
-    el.addEventListener('mouseleave', () => {
-      ring.style.transform = 'translate(-50%,-50%) scale(1)';
-      ring.style.opacity = '0.5';
-    });
-  });
-
-  // Scroll reveal for education
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 150);
-      }
-    });
-  }, { threshold: 0.2 });
-
-  document.querySelectorAll('.edu-item').forEach(el => observer.observe(el));
-
-  // Smooth nav highlighting
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 200) current = s.id;
-    });
-    navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--rust)' : '';
-    });
-  });
-
-  const chatbotToggle = document.getElementById('chatbotToggle');
-  const chatbotPanel = document.getElementById('chatbotPanel');
-  const chatbotClose = document.getElementById('chatbotClose');
-  const chatbotMessages = document.getElementById('chatbotMessages');
-  const chatbotInput = document.getElementById('chatbotInput');
-  const chatbotSend = document.getElementById('chatbotSend');
-
-  const localReplies = {
-    hello: 'Hello! I am Shital Shahi’s portfolio assistant. Ask me about her work, skills, education, certificates, or contact details.',
-    portfolio: 'This portfolio belongs to Shital Shahi, a UI/UX and product designer based in Godavari, Nepal. It highlights her skills in design, front-end development, and her education journey.',
-    skills: 'Shital works with Figma, Canva, draw.io, HTML, and CSS. She also has strong problem-solving foundations and soft skills like active listening, time management, adaptability, and teamwork.',
-    education: 'She studied at St. Xavier’s School, Godavari (Secondary Education Examination, 2022), St. Mary’s School, Jawalakhel (+2 NEB Boards, 2024), and is currently pursuing BSc. IT at Techspire College.',
-    certificates: 'Shital has certificates for Figma UI/UX Workshop from AITM, Basics of Figma from Simplilearn, and Basics of UI/UX from Simplilearn.',
-    projects: 'Featured projects include a music mobile application and a medical application, both focused on user-centered design and usability.',
-    contact: 'You can reach Shital at shital24shahi@gmail.com or by phone at +977 9818751601.',
-    default: 'I’m here to help. Try asking about Shital’s skills, education, projects, or how to contact her.'
-  };
-
-  function addMessage(text, type) {
-    const message = document.createElement('div');
-    message.className = `chatbot-message ${type}`;
-    message.textContent = text;
-    chatbotMessages.appendChild(message);
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-  }
-
-  function getLocalReply(userText) {
-    const normalized = userText.toLowerCase();
-    if (normalized.includes('skill') || normalized.includes('design') || normalized.includes('front-end')) return localReplies.skills;
-    if (normalized.includes('education') || normalized.includes('college') || normalized.includes('school')) return localReplies.education;
-    if (normalized.includes('certificate') || normalized.includes('certification') || normalized.includes('certs')) return localReplies.certificates;
-    if (normalized.includes('project') || normalized.includes('work') || normalized.includes('application')) return localReplies.projects;
-    if (normalized.includes('contact') || normalized.includes('email') || normalized.includes('phone')) return localReplies.contact;
-    if (normalized.includes('portfolio') || normalized.includes('site') || normalized.includes('page')) return localReplies.portfolio;
-    if (normalized.includes('hello') || normalized.includes('hi') || normalized.includes('hey')) return localReplies.hello;
-    return localReplies.default;
-  }
-
-  function sendChat() {
-    const value = chatbotInput.value.trim();
-    if (!value) return;
-    addMessage(value, 'user');
-    chatbotInput.value = '';
-
-    addMessage('Typing...', 'bot');
-    chatbotPanel.scrollTop = chatbotPanel.scrollHeight;
-
-    setTimeout(() => {
-      const reply = getLocalReply(value);
-      const typingBubble = chatbotMessages.querySelector('.chatbot-message.bot:last-child');
-      if (typingBubble) typingBubble.textContent = reply;
-    }, 400);
-  }
-
-  chatbotToggle.addEventListener('click', () => chatbotPanel.classList.toggle('open'));
-  chatbotClose.addEventListener('click', () => chatbotPanel.classList.remove('open'));
-  chatbotSend.addEventListener('click', sendChat);
-  chatbotInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') sendChat();
-  });
+(function(){
+var io=null;try{io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.08})}catch(e){}
+document.querySelectorAll(".rv").forEach(function(el){io?io.observe(el):el.classList.add("in")});
+var chat=document.getElementById("chat"),log=document.getElementById("log"),q=document.getElementById("q");
+function tog(){chat.classList.toggle("on");if(chat.classList.contains("on"))q.focus()}
+document.getElementById("fab").onclick=tog;document.getElementById("x").onclick=tog;
+var A=[
+[/skill|tool|figma|canva|design|good at/,"I design in Figma and Canva: wireframes, user flows, user research, usability testing and design systems. I also know basic HTML, CSS and JavaScript."],
+[/project|work|built|portfolio|ncell|music|medical|nagarik|avilearn/,"I’ve worked on five projects: an Ncell desktop app redesign, a music mobile app, a medical app, the Avilearn web app and a Nagarik app redesign. Open the Projects section for details."],
+[/educat|study|college|school|degree|certif|course/,"I’m doing a BSc. in Information Technology at Techspire College. I also hold certificates from AITM, Simplilearn and Techspire College."],
+[/experience|fellow|teach|educator|job|intern/,"In 2026 I was an IT Fellow and Educator in the TSC Fellowship Program at Techspire College, a 21-day program with EduTech Nepal and Himalayan Trust Nepal."],
+[/contact|email|mail|phone|call|hire|reach|connect|linkedin/,"You can email shitalshahi004@gmail.com, call +977 9818751601, or find me on LinkedIn at linkedin.com/in/shitalshahi024."],
+[/where|location|live|based|nepal/,"I’m based in Lalitpur, Nepal."],
+[/hello|hi|hey/,"Hello! What would you like to know about my work?"]];
+document.getElementById("f").onsubmit=function(e){e.preventDefault();var t=q.value.trim();if(!t)return;
+function add(c,s){var p=document.createElement("p");p.className=c;p.textContent=s;log.appendChild(p);log.scrollTop=log.scrollHeight}
+add("u",t);q.value="";var l=t.toLowerCase(),r="I’m not sure about that one. Try asking about my skills, projects, education or contact details.";
+for(var i=0;i<A.length;i++){if(A[i][0].test(l)){r=A[i][1];break}}
+setTimeout(function(){add("b",r)},350)};
+})();
 </script>
 </body>
 </html>
